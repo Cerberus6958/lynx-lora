@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import type { DataPoint } from './SampleData';
+import type { DataPoint } from './types/SampleData';
 import { StartStopButton } from './templates/StartStopButton';
 
 export default function LiveChart({name, colour}: { name: string, colour: string }) {

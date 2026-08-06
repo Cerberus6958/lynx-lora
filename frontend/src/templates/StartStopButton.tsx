@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, type SetStateAction, type Dispatch } from 'react';
 import type { DataPoint } from '../types/SampleData';
 
-import { appendFile } from 'node:fs';
+// import { appendFile } from 'node:fs/promises';
 
 const MAX_POINTS = 40;      // how many points stay visible on screen
 const INTERVAL_MS = 500;    // how often a new point arrives
@@ -29,12 +29,12 @@ export function StartStopButton({ setData, name }: StartStopButtonProps) {
         value: Math.round(valueRef.current * 100) / 100,
       };
 
-      try {
-        await appendFile(`${name}.txt`, point, 'utf-8');
-        console.log('File written successfully.');
-      } catch (error) {
-        console.error('Error writing file:', error);
-      }
+      // try {
+      //   await appendFile(`${name}.txt`, `${point}`);
+      //   console.log('File written successfully.');
+      // } catch (error) {
+      //   console.error('Error writing file:', error);
+      // }
 
       setData(prev => {
         const next = [...prev, point];

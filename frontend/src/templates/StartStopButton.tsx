@@ -1,22 +1,25 @@
 import React, { useState, useEffect, useRef, type SetStateAction, type Dispatch } from 'react';
 import type { DataPoint } from '../types/SampleData';
 
+import { appendFile } from 'node:fs';
+
 const MAX_POINTS = 40;      // how many points stay visible on screen
 const INTERVAL_MS = 500;    // how often a new point arrives
 
 interface StartStopButtonProps {
   data: DataPoint[];
   setData: Dispatch<SetStateAction<DataPoint[]>>;
+  name: string
 }
 
-export function StartStopButton({ setData }: StartStopButtonProps) {
+export function StartStopButton({ setData, name }: StartStopButtonProps) {
   const [running, setRunning] = useState(true);
   const valueRef = useRef(50); // last value, so new points random-walk instead of jumping around
 
   useEffect(() => {
     if (!running) return;
 
-    const id = setInterval(() => {
+    const id = setInterval(async () => {
       // random walk step, clamped so it doesn't drift off screen
       valueRef.current += (Math.random() - 0.5) * 10;
       valueRef.current = Math.max(0, Math.min(100, valueRef.current));
@@ -25,6 +28,13 @@ export function StartStopButton({ setData }: StartStopButtonProps) {
         time: new Date().toLocaleTimeString(),
         value: Math.round(valueRef.current * 100) / 100,
       };
+
+      try {
+        await appendFile(`${name}.txt`, point, 'utf-8');
+        console.log('File written successfully.');
+      } catch (error) {
+        console.error('Error writing file:', error);
+      }
 
       setData(prev => {
         const next = [...prev, point];

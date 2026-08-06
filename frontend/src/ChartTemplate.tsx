@@ -24,7 +24,7 @@ export default function LiveChart({name, colour}: { name: string, colour: string
             >
               {running ? 'Pause' : 'Resume'}
             </button> */}
-            <StartStopButton data={data} setData={setData}></StartStopButton>
+            <StartStopButton data={data} setData={setData} name={name}></StartStopButton>
           </div>
       {/* <StartStopButton data={data} setData={setData}></StartStopButton> */}
       <ResponsiveContainer width="100%" height="85%">

@@ -2,9 +2,34 @@ import React, { useState, useEffect, useRef } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import type { DataPoint } from './types/SampleData';
 import { StartStopButton } from './templates/StartStopButton';
+import { API_BASE_URL } from './api';
 
 export default function LiveChart({name, colour}: { name: string, colour: string }) {
   const [data, setData] = useState<DataPoint[]>([]);
+
+  useEffect(() => {
+    console.log('EFFECT RAN');
+    console.log('data:', data);
+    if (data.length === 0) {
+      return;
+    }
+    fetch(`${API_BASE_URL}/datastore`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        graph: name,
+        data: data.at(-1)
+      })
+    })
+    .then((res) => {
+      if (res.ok) {
+        return res;
+      } else {
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+      }
+    })
+    .catch((err) => console.error('Error logging point:', err));
+  }, [data])
 
   return (
     <div className="w-full h-[320px] p-4 rounded-xl border shadow-sm font-sans">

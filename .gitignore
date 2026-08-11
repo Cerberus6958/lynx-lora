@@ -13,6 +13,8 @@ dist-ssr
 *.local
 *.code-workspace
 
+backend/dataStore/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

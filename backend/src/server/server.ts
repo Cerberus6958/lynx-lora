@@ -9,7 +9,7 @@ import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
 
 const BAUDRATE = 9600;
-const SERIALPATH = '/dev/cu.usbmodem1101';
+const SERIALPATH = '/dev/cu.usbmodem101';
 
 const app = express();
 app.use(json());
@@ -23,13 +23,15 @@ const PORT: number = parseInt(process.env.PORT ?? '3001');
 const HOST: string = process.env.IP || '127.0.0.1';
 
 const arduino = new SerialPort({path: SERIALPATH, baudRate: BAUDRATE});
-const parser = arduino.pipe(new ReadlineParser({ delimiter: '\r\n' }));
+const parser = arduino.pipe(new ReadlineParser({ delimiter: '\n' }));
 
 arduino.on('open', () => console.log(`Arduino on to port ${SERIALPATH}`));
-arduino.on('error', () => console.log(`Arduino error`));
+arduino.on('error', (err) => console.log(`Arduino error: ${err.message}`));
 
 parser.on('data', (data) => {
-  const value = parseFloat(data.trim());
+  data = data.trim();
+  data = data.match(/([0-9]+)cm/);
+  const value = data[1];
   if (!isNaN(value)) {
     console.log(`${value}`);
     sendOver(data);

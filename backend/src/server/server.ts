@@ -4,6 +4,7 @@ import process from 'process';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { WebSocketServer } from 'ws';
 
 const app = express();
 app.use(json());

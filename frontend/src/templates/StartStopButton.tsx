@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef, type SetStateAction, type Dispatch } from 'react';
+import React, { useState, useEffect, useRef, type SetStateAction, type Dispatch, use } from 'react';
 import type { DataPoint } from '../types/SampleData';
 
 // import { appendFile } from 'node:fs/promises';
 
 const MAX_POINTS = 40;      // how many points stay visible on screen
 const INTERVAL_MS = 500;    // how often a new point arrives
+const WEBSOCKETPORT = 3001;
 
 interface StartStopButtonProps {
   data: DataPoint[];
@@ -15,18 +16,36 @@ interface StartStopButtonProps {
 export function StartStopButton({ setData, name }: StartStopButtonProps) {
   const [running, setRunning] = useState(true);
   const valueRef = useRef(50); // last value, so new points random-walk instead of jumping around
+  let num = useRef(0);
+  useEffect(() => {
+    const wss = new WebSocket(`ws://localhost:${WEBSOCKETPORT}`);
+
+    wss.onmessage = (event) => {
+      // const data = JSON.parse(event.data);
+      const data = event.data;
+      console.log(data);
+      num.current = Number(data);
+    };
+
+    return () => {
+      wss.close();
+    };
+  }, []);
 
   useEffect(() => {
     if (!running) return;
-
     const id = setInterval(async () => {
-      // random walk step, clamped so it doesn't drift off screen
       valueRef.current += (Math.random() - 0.5) * 10;
       valueRef.current = Math.max(0, Math.min(100, valueRef.current));
 
+      // const point = {
+      //   time: new Date().toLocaleTimeString(),
+      //   value: Math.round(valueRef.current * 100) / 100,
+      // };
+
       const point = {
         time: new Date().toLocaleTimeString(),
-        value: Math.round(valueRef.current * 100) / 100,
+        value: num.current,
       };
 
       // try {

@@ -4,7 +4,9 @@ import type { DataPoint } from './types/SampleData';
 import { StartStopButton } from './templates/StartStopButton';
 import { API_BASE_URL } from './api';
 
-export default function LiveChart({name, colour}: { name: string, colour: string }) {
+// const WEBSOCKETPORT = 3002;
+
+export default function LiveChart({name, colour, port }: { name: string, colour: string, port: number }) {
   const [data, setData] = useState<DataPoint[]>([]);
 
   useEffect(() => {
@@ -49,7 +51,7 @@ export default function LiveChart({name, colour}: { name: string, colour: string
             >
               {running ? 'Pause' : 'Resume'}
             </button> */}
-            <StartStopButton data={data} setData={setData} name={name}></StartStopButton>
+            <StartStopButton data={data} setData={setData} name={name} port={port}></StartStopButton>
           </div>
       {/* <StartStopButton data={data} setData={setData}></StartStopButton> */}
       <ResponsiveContainer width="100%" height="85%">

@@ -5,6 +5,7 @@ import Page1 from './Page1.tsx';
 import Page2 from './Page2.tsx';
 import Page3 from './Page3.tsx';
 import Imu from './IMU.tsx';
+import UltrasonicDemo from './UltrasonicDemo.tsx';
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -41,6 +42,12 @@ function App() {
       items: [
         { full: 'IMU', short: 'IMU' },
       ]
+    },
+    {
+      to: 'demo',
+      items: [
+        { full: 'Ultrasonic Demo', short: 'Demo' },
+      ]
     }
   ]
 
@@ -71,6 +78,7 @@ function App() {
               <Route path='/2' element={<Page2 />}></Route>
               <Route path='/3' element={<Page3 />}></Route>
               <Route path='/imu' element={<Imu />}></Route>
+              <Route path='/demo' element={<UltrasonicDemo />}></Route>
             </Routes>
           </main>
         </BrowserRouter>

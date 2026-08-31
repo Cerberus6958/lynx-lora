@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import ChartTemplate from './ChartTemplate';
 
+const WEBSOCKETPORT = 3002;
+
 function Page1() {
   return (
     <>
@@ -8,16 +10,16 @@ function Page1() {
         <div className='min-h-screen flex justify-center items-center'>
           <div className='grid grid-cols-2 gap-8'>
             <div className='w-140 h-85 p-2 rounded-lg bg-[#280c47] text-[#06f36f]'>
-              <ChartTemplate name='Wheel Speed' colour='#06f36f'></ChartTemplate>
+              <ChartTemplate name='Wheel Speed' port={0} colour='#06f36f'></ChartTemplate>
             </div>
             <div className='w-140 h-85 p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#280c47] to-[#06f36f] text-[#06f36f]'>
-              <ChartTemplate name='Throttle Position' colour='#06f36f'></ChartTemplate>
+              <ChartTemplate name='Throttle Position' port={0} colour='#06f36f'></ChartTemplate>
             </div>
             <div className='w-140 h-85 p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#280c47] to-[#06f36f] text-[#06f36f]'>
-               <ChartTemplate name='RPM' colour='#06f36f'></ChartTemplate>
+               <ChartTemplate name='RPM' port={0} colour='#06f36f'></ChartTemplate>
             </div>
             <div className='w-140 h-85 p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#06f36f] to-[#06f36f] text-[#280c47]'>
-               <ChartTemplate name='Motor Temperature' colour='#280c47'></ChartTemplate>
+               <ChartTemplate name='Motor Temperature' port={0} colour='#280c47'></ChartTemplate>
             </div>
           </div>
         </div>

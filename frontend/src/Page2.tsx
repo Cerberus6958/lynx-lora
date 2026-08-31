@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import ChartTemplate from './ChartTemplate';
+import ChartTemplate from './templates/ChartTemplate';
 
 function Page2() {
   return (

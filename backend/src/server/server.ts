@@ -17,7 +17,7 @@ app.use(cors());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dataFilePath = path.join(__dirname, '..', '..', 'dataStore');
-const wss = new WebSocketServer({ port: 3001});
+const wss = new WebSocketServer({ port: 3002});
 
 const PORT: number = parseInt(process.env.PORT ?? '3001');
 const HOST: string = process.env.IP || '127.0.0.1';
@@ -34,15 +34,15 @@ parser.on('data', (data) => {
   const value = data[1];
   if (!isNaN(value)) {
     console.log(`${value}`);
-    sendOver(data);
+    sendOver(value);
   }
 })
 
 function sendOver(data: number) {
-  const msg = JSON.stringify(data);
+  // const msg = JSON.stringify(data);
   wss.clients.forEach((client) => {
     if (client.readyState == client.OPEN) {
-      client.send(msg);
+      client.send(data);
     }
   })
 }

@@ -3,9 +3,9 @@ import type { DataPoint } from '../types/SampleData';
 
 // import { appendFile } from 'node:fs/promises';
 
-const MAX_POINTS = 40;      // how many points stay visible on screen
-const INTERVAL_MS = 500;    // how often a new point arrives
-const WEBSOCKETPORT = 3001;
+const MAX_POINTS = 40;
+const INTERVAL_MS = 500;
+const WEBSOCKETPORT = 3002;
 
 interface StartStopButtonProps {
   data: DataPoint[];
@@ -15,7 +15,7 @@ interface StartStopButtonProps {
 
 export function StartStopButton({ setData, name }: StartStopButtonProps) {
   const [running, setRunning] = useState(true);
-  const valueRef = useRef(50); // last value, so new points random-walk instead of jumping around
+  // const valueRef = useRef(50);
   let num = useRef(0);
   useEffect(() => {
     const wss = new WebSocket(`ws://localhost:${WEBSOCKETPORT}`);
@@ -35,8 +35,8 @@ export function StartStopButton({ setData, name }: StartStopButtonProps) {
   useEffect(() => {
     if (!running) return;
     const id = setInterval(async () => {
-      valueRef.current += (Math.random() - 0.5) * 10;
-      valueRef.current = Math.max(0, Math.min(100, valueRef.current));
+      // valueRef.current += (Math.random() - 0.5) * 10;
+      // valueRef.current = Math.max(0, Math.min(100, valueRef.current));
 
       // const point = {
       //   time: new Date().toLocaleTimeString(),

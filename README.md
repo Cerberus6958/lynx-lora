@@ -8,3 +8,5 @@ Currently we have also added a demo for an ultrasonic sensor communicaitng over 
 ## How to Run
 
 To run, simply run **npm run dev** in the frontend folder, and **npx tsx src/server/server.ts** in the backend folder and you should see the data being printed into the terminal and stored in their respective files when they are displayed on the frontend.
+
+If you want to use your own sensor over a microcontroller, make sure to change your BAUD rate to match, as well as the port name and comment out the extra filter code inside server.ts for the numbers, and it should work.

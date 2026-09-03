@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import { BrowserRouter, Routes, Route, Link } from 'react-router'
-import Page1 from './Page1.tsx';
-import Page2 from './Page2.tsx';
-import Page3 from './Page3.tsx';
-import Imu from './IMU.tsx';
-import UltrasonicDemo from './UltrasonicDemo.tsx';
-import MasterPage from './MasterPage.tsx';
+import Page1 from './pages/Page1.tsx';
+import Page2 from './pages/Page2.tsx';
+import Page3 from './pages/Page3.tsx';
+import Imu from './pages/IMU.tsx';
+import UltrasonicDemo from './pages/UltrasonicDemo.tsx';
+import MasterPage from './pages/MasterPage.tsx';
 
 function App() {
   // const [count, setCount] = useState(0)

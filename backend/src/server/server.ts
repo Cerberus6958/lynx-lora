@@ -17,6 +17,9 @@ app.use(cors());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dataFilePath = path.join(__dirname, '..', '..', 'dataStore');
+if (!fs.existsSync(dataFilePath)) {
+  fs.mkdirSync(dataFilePath, { recursive: true });
+}
 const wss = new WebSocketServer({ port: 3002});
 
 const PORT: number = parseInt(process.env.PORT ?? '3001');

@@ -6,7 +6,7 @@ import Page2 from './Page2.tsx';
 import Page3 from './Page3.tsx';
 import Imu from './IMU.tsx';
 import UltrasonicDemo from './UltrasonicDemo.tsx';
-import MasterPage from './Page.tsx';
+import MasterPage from './MasterPage.tsx';
 
 function App() {
   // const [count, setCount] = useState(0)

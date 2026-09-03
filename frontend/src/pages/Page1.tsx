@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import ChartTemplate from './templates/ChartTemplate';
+import ChartTemplate from '../templates/ChartTemplate';
 
 const WEBSOCKETPORT = 3002;
 

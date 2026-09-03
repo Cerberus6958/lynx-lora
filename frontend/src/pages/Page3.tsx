@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import ChartTemplate from './templates/ChartTemplate';
+import ChartTemplate from '../templates/ChartTemplate';
 
 function Page3() {
   const [expanded, setExpanded] = useState<string | null>(null);

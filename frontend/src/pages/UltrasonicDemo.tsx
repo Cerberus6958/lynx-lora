@@ -1,4 +1,4 @@
-import ChartTemplate from './templates/ChartTemplate';
+import ChartTemplate from '../templates/ChartTemplate';
 
 function UltrasonicDemo() {
   return (

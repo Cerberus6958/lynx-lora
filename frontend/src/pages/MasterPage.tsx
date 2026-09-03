@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
-import ChartTemplate from './templates/ChartTemplate';
-import type { Page } from './types/PageTypes';
-import LeftArrowButton from './templates/LeftArrowButton';
-import RightArrowButton from './templates/RightArrowButton';
-import { pages } from './templates/CurrentPages';
+import ChartTemplate from '../templates/ChartTemplate';
+import LeftArrowButton from '../templates/LeftArrowButton';
+import RightArrowButton from '../templates/RightArrowButton';
+import { pages } from '../templates/CurrentPages';
 
 const WEBSOCKETPORT = 3002;
 

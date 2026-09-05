@@ -3,12 +3,14 @@ import ChartTemplate from '../templates/ChartTemplate';
 import LeftArrowButton from '../templates/LeftArrowButton';
 import RightArrowButton from '../templates/RightArrowButton';
 import { pages } from '../templates/CurrentPages';
+import NewGraphButton from '../templates/NewGraphButton';
 
 const WEBSOCKETPORT = 3002;
 
 function MasterPage() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(0);
+  const [newGraphForm, setNewGraphForm] = useState<boolean>(false);
 
   return (
     <>
@@ -39,6 +41,9 @@ function MasterPage() {
         })()}
         { !expanded &&
           <div className='flex justify-center gap-2'>
+            <NewGraphButton onClick={() => setNewGraphForm(true)}>
+
+            </NewGraphButton>
             <LeftArrowButton onClick={() => {
               if (pageNumber > 0) {
                 setPageNumber(pageNumber - 1);

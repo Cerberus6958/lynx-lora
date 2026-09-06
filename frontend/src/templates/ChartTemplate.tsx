@@ -20,7 +20,7 @@ export default function LiveChart({graph, port }: { graph: Graph, port: number }
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        graph: name,
+        graph: graph.name,
         data: data.at(-1)
       })
     })

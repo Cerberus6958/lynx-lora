@@ -7,5 +7,7 @@ export type Page = {
 export type Graph = {
     name: string
     colour: string,
-    style: string
+    style: string,
+    data?: DataPoint[],
+    type: string
 }

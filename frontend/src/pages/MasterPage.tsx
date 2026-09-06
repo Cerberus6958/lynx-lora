@@ -4,6 +4,7 @@ import LeftArrowButton from '../templates/LeftArrowButton';
 import RightArrowButton from '../templates/RightArrowButton';
 import { pages } from '../templates/CurrentPages';
 import NewGraphButton from '../templates/NewGraphButton';
+import { useNavigate } from 'react-router';
 
 const WEBSOCKETPORT = 3002;
 
@@ -11,38 +12,32 @@ function MasterPage() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(0);
   const [newGraphForm, setNewGraphForm] = useState<boolean>(false);
+  let currentPage = pages[pageNumber].graphs;
+  const navigate = useNavigate();
 
   return (
     <>
       <div className='min-h-screen bg-gradient-to-br from-[#06f36f] via-[#280c47] to-[#280c47]'>
-        {(() => {
-          let currentPage = pages[pageNumber].graphs;
-          return expanded ? ( 
-            <>
-              <div className='min-h-screen flex justify-center items-center'>
-                <div className={`w-[87vw] h-[95vh] ${currentPage.find((chart) => chart.name === expanded)!.style}`} onClick={() => setExpanded(null)}>
-                  <ChartTemplate name={currentPage.find((chart) => chart.name === expanded)!.name} port={0} colour={currentPage.find((chart) => chart.name === expanded)!.colour}></ChartTemplate>
-                </div>
+        <div className={expanded ? `min-h-screen flex justify-center items-center` : `h-[95vh] flex justify-center items-center`}>
+          <div className={expanded ? 'w-[87vw] h-[95vh]' : 'grid grid-cols-2 gap-8'}>
+            {currentPage.map((graph) => (
+              <div
+                key={graph.name}
+                className={
+                  expanded
+                    ? `${graph.style} ${graph.name === expanded ? 'block w-full h-full' : 'hidden'}`
+                    : `w-140 h-80 ${graph.style}`
+                }
+                onClick={() => setExpanded(expanded ? null : graph.name)}
+              >
+                <ChartTemplate graph={graph} port={0} />
               </div>
-            </>
-            ) : (
-            <>
-              <div className='h-[95vh] flex justify-center items-center'>
-                <div className='grid grid-cols-2 gap-8'>
-                  {currentPage.map(({name, colour, style}) => (
-                    <div key={name} className={`w-140 h-80 ${style}`} onClick={() => setExpanded(name)}>
-                      <ChartTemplate name={name} port={0} colour={colour}></ChartTemplate>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>
-            )
-        })()}
+            ))}
+          </div>
+        </div>
         { !expanded &&
           <div className='flex justify-center gap-2'>
-            <NewGraphButton onClick={() => setNewGraphForm(true)}>
-
+            <NewGraphButton onClick={() => navigate('/new')}>
             </NewGraphButton>
             <LeftArrowButton onClick={() => {
               if (pageNumber > 0) {

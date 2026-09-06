@@ -36,7 +36,7 @@ function Page1() {
           { expanded ? ( 
             <>
               <div className={`w-[87vw] h-[95vh] ${graphs.find((chart) => chart.key === expanded)!.style}`} onClick={() => setExpanded(null)}>
-                <ChartTemplate name={graphs.find((chart) => chart.key === expanded)!.key} port={0} colour={graphs.find((chart) => chart.key === expanded)!.colour}></ChartTemplate>
+                <ChartTemplate optionalData={[]} name={graphs.find((chart) => chart.key === expanded)!.key} port={0} colour={graphs.find((chart) => chart.key === expanded)!.colour}></ChartTemplate>
               </div>
             </>
             ) : (
@@ -44,7 +44,7 @@ function Page1() {
               <div className='grid grid-cols-2 gap-8'>
                 {graphs.map(({key, colour, style}) => (
                   <div key={key} className={`w-140 h-85 ${style}`} onClick={() => setExpanded(key)}>
-                    <ChartTemplate name={key} port={0} colour={colour}></ChartTemplate>
+                    <ChartTemplate optionalData={[]} name={key} port={0} colour={colour}></ChartTemplate>
                   </div>
                 ))}
               </div>

@@ -11,14 +11,16 @@ interface StartStopButtonProps {
   data: DataPoint[];
   setData: Dispatch<SetStateAction<DataPoint[]>>;
   name: string;
-  port: number
+  port: number;
+  type: string
 }
 
-export function StartStopButton({ data, setData, name, port }: StartStopButtonProps) {
+export function StartStopButton({ data, setData, name, port, type }: StartStopButtonProps) {
   const [running, setRunning] = useState(true);
   const valueRef = useRef(50);
   let num = useRef<DataPoint | undefined>(null);
   useEffect(() => {
+    if (port === 0) return;
     const wss = new WebSocket(`ws://localhost:${port}`);
 
     wss.onmessage = (event) => {
@@ -35,6 +37,7 @@ export function StartStopButton({ data, setData, name, port }: StartStopButtonPr
 
   useEffect(() => {
     if (!running) return;
+    if (type === 'Still') return;
     const id = setInterval(async () => {
       valueRef.current += (Math.random() - 0.5) * 10;
       valueRef.current = Math.max(0, Math.min(100, valueRef.current));

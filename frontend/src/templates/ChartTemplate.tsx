@@ -3,11 +3,12 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import type { DataPoint } from '../types/SampleData';
 import { StartStopButton } from './StartStopButton';
 import { API_BASE_URL } from '../api';
+import type { Graph } from '../types/PageTypes';
 
 // const WEBSOCKETPORT = 3002;
 
-export default function LiveChart({name, colour, port }: { name: string, colour: string, port: number }) {
-  const [data, setData] = useState<DataPoint[]>([]);
+export default function LiveChart({graph, port }: { graph: Graph, port: number }) {
+  const [data, setData] = useState<DataPoint[]>(graph.data ?? []);
 
   useEffect(() => {
     console.log('EFFECT RAN');
@@ -41,7 +42,7 @@ export default function LiveChart({name, colour, port }: { name: string, colour:
                 className={`h-2 w-2 rounded-full ${running ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}`}
               /> */}
               <h3 className="text-sm font-semibold text-[#06f36f] tracking-tight">
-                {name}
+                {graph.name}
               </h3>
             </div>
             {/* <button
@@ -51,7 +52,7 @@ export default function LiveChart({name, colour, port }: { name: string, colour:
             >
               {running ? 'Pause' : 'Resume'}
             </button> */}
-            <StartStopButton data={data} setData={setData} name={name} port={port}></StartStopButton>
+            <StartStopButton data={data} setData={setData} name={graph.name} type={graph.type} port={port}></StartStopButton>
           </div>
       {/* <StartStopButton data={data} setData={setData}></StartStopButton> */}
       <ResponsiveContainer width="100%" height="85%">
@@ -65,7 +66,7 @@ export default function LiveChart({name, colour, port }: { name: string, colour:
           <Line
             type="monotone"
             dataKey="value"
-            stroke={colour}
+            stroke={graph.colour}
             strokeWidth={2}
             dot={false}
             isAnimationActive={false} // avoids lag/flicker on rapid updates

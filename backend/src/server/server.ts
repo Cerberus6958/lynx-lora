@@ -32,15 +32,24 @@ arduino.on('open', () => console.log(`Arduino on to port ${SERIALPATH}`));
 arduino.on('error', (err) => console.log(`Arduino error: ${err.message}`));
 
 parser.on('data', (data) => {
-  data = data.trim();
-  data = data.match(/([0-9]+)cm/);
-  const value = data[1];
-  if (!isNaN(value)) {
-    console.log(`${value}`);
-    sendOver(value);
-  }
+  console.log(data)
+
+  // Filtering logic for each packet should come here, one value for each sensor in the packet sent over
+
+
+  // for (let i = 3000; i < 3015; i++) {
+    // const wss = new WebSocketServer({ port: i});    
+    data = data.trim();
+    data = data.match(/([0-9]+)cm/);
+    const value = data[1];
+    if (!isNaN(value)) {
+      console.log(`${value}`);
+      sendOver(value);
+    }
+  // }
 })
 
+// function sendOver(data: number, wss: WebSocketServer) {
 function sendOver(data: number) {
   // const msg = JSON.stringify(data);
   wss.clients.forEach((client) => {

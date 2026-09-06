@@ -14,18 +14,18 @@ interface StartStopButtonProps {
   port: number
 }
 
-export function StartStopButton({ setData, name, port }: StartStopButtonProps) {
+export function StartStopButton({ data, setData, name, port }: StartStopButtonProps) {
   const [running, setRunning] = useState(true);
   const valueRef = useRef(50);
-  let num = useRef(0);
+  let num = useRef<DataPoint | undefined>(null);
   useEffect(() => {
     const wss = new WebSocket(`ws://localhost:${port}`);
 
     wss.onmessage = (event) => {
-      // const data = JSON.parse(event.data);
-      const data = event.data;
+      const data = JSON.parse(event.data);
+      // const data = event.data;
       console.log(data);
-      num.current = Number(data);
+      num.current = data;
     };
 
     return () => {
@@ -39,25 +39,26 @@ export function StartStopButton({ setData, name, port }: StartStopButtonProps) {
       valueRef.current += (Math.random() - 0.5) * 10;
       valueRef.current = Math.max(0, Math.min(100, valueRef.current));
 
-      // const point = {
-      //   time: new Date().toLocaleTimeString(),
-      //   value: Math.round(valueRef.current * 100) / 100,
-      // };
-
+      // So each sensor will have one point for each time (packet of data sent)
       const point = {
-        time: new Date().toLocaleTimeString(),
-        value: port !== 0 ? num.current : Math.round(valueRef.current * 100) / 100,
+        time: port !== 0 ? num.current!.time : new Date().toLocaleTimeString(),
+        value: port !== 0 ? num.current!.value : Math.round(valueRef.current * 100) / 100,
       };
 
-      // try {
-      //   await appendFile(`${name}.txt`, `${point}`);
-      //   console.log('File written successfully.');
-      // } catch (error) {
-      //   console.error('Error writing file:', error);
-      // }
-
+      // Below is the logic for values that may have been originally missed, that should be reinserted
+      // into the data properly at the matching timestamp
       setData(prev => {
-        const next = [...prev, point];
+        let next = [...prev, point];
+        if (port !== 0) {
+          for (let i = prev.length - 1; i >= 0; i --) {
+            if (prev[i].time < point.time) {
+              next = [...prev.slice(0, i + 1), point, ...prev.slice(i + 1)]
+              break;
+            }
+          }
+        } else {
+          next = [...prev, point];
+        }
         return next.length > MAX_POINTS ? next.slice(next.length - MAX_POINTS) : next;
       });
     }, INTERVAL_MS);

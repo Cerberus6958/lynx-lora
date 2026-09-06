@@ -4,8 +4,10 @@
 
 #include "config.h"
 #include "radio1.h"
+#include <ArduinoJson.h>
 
-unsigned long readingNumber = 1;
+// unsigned long readingNumber = 1;
+unsigned long myTime = 1;
 
 int readDistanceCm() {
   digitalWrite(TRIG_PIN, LOW);  delayMicroseconds(2);
@@ -34,17 +36,26 @@ void setup() {
 }
 
 void loop() {
-  char packet[64];
+  char packet[251];
   packet[0] = '\0';
 
+  JsonDocument doc;
+  myTime = millis();
+
+  doc["ms"] = myTime;
+  JsonArray values = doc["values"].to<JsonArray>();
+
   for (int i = 0; i < READINGS_PER_PACKET; i++) {
-    char line[16];
-    snprintf(line, sizeof(line), "%luUS %dcm\n", readingNumber++, readDistanceCm());
-    strncat(packet, line, sizeof(packet) - strlen(packet) - 1);
+    // char line[16];
+    // snprintf(line, sizeof(line), "%luUS %dcm\n", myTime, readDistanceCm());
+    // strncat(packet, line, sizeof(packet) - strlen(packet) - 1);
+    values.add(readDistanceCm());
     delay(READING_INTERVAL_MS);
   }
 
-  rf95.send((uint8_t*)packet, strlen(packet) + 1);
+  size_t len = serializeJson(doc, packet, sizeof(packet));
+
+  rf95.send((uint8_t*)packet, len);
   rf95.waitPacketSent(2000);
 
   Serial.print(packet);

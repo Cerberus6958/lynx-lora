@@ -3,33 +3,58 @@ import { pages } from '../templates/CurrentPages';
 import type { Page, Graph } from "../types/PageTypes";
 import { useNavigate } from "react-router";
 import { options } from "../types/GraphTypes";
+import type { DataPoint } from "../types/SampleData";
+import { savePages } from "../customStore/dataStore";
 
 function NewGraphForm() {
-  const [chosen, setChosen] = useState<string>('');
+  const [chosen, setChosen] = useState<string>("Running");
   const [file, setFile] = useState<FileList | null>(null);
-  const [name, setName] = useState<string>('');
+  const [name, setName] = useState<string>("");
   const navigate = useNavigate();
+  const [data, setData] = useState<DataPoint[]>([]);
 
   function submitGraph() {
+    
     let latestPage = pages.at(-1);
-    const newGraph: Graph = {
-      name: name,
-      colour: "bg-[#280c47]",
-      style: "",
-      type: chosen
-    }
-    if (latestPage!.graphs.length >= 4) {
-      const newPage: Page = {
-        graphs: [
-          newGraph
-        ]
+    if (!file || !file[0]) return;
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      try {
+        let newData = JSON.parse(event.target?.result as string);
+        setData(newData);
+        const newGraph: Graph = {
+          name: name,
+          colour: "#06f36f",
+          style: "p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#280c47] to-[#06f36f] text-[#06f36f]",
+          type: chosen,
+          data: newData
+        }
+
+        if (latestPage!.graphs.length >= 4) {
+          const newPage: Page = {
+            graphs: [
+              newGraph
+            ]
+          }
+          newGraph.style = "p-2 rounded-lg bg-[#280c47] text-[#06f36f]";
+          pages.push(newPage);
+        } else {
+          if (latestPage!.graphs.length === 3) newGraph.colour = "#280c47";
+          latestPage!.graphs.push(newGraph);
+        }
+        savePages(pages);
+        navigate('/master');
+      } catch (e) {
+        console.error("Failed to parse JSON:", e);
       }
-      pages.push(newPage);
-    } else {
-      latestPage!.graphs.push(newGraph);
     }
 
-    navigate('/master');
+    reader.onerror = () => {
+      console.error("Failed to read file:");      
+    }
+
+    reader.readAsText(file[0]);
   }
 
   return (
@@ -48,7 +73,7 @@ function NewGraphForm() {
         </div>
         <div>JSON File</div>
         <input type="file" className="self-center bg-[#280c47] w-[14vw] file:bg-purple-900" onChange={(e) => setFile(e.target.files)}></input>
-        <button className="bg-[#06f36f] self-center rounded-md w-20 h-10" onClick={submitGraph}>Submit</button>
+        <button className="bg-[#06f36f] self-center rounded-md w-20 h-10" onClick={(e) => {submitGraph(); e.preventDefault()}}>Submit</button>
       </form>
     </>
   )

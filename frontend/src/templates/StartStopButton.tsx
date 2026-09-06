@@ -81,7 +81,7 @@ export function StartStopButton({ data, setData, name, port, type }: StartStopBu
               </h3>
             </div> */}
             <button
-              onClick={() => setRunning(r => !r)}
+              onClick={(e) => {setRunning(r => !r); e.stopPropagation()}}
               className={`px-3.5 py-1.5 rounded-md text-sm font-semibold text-white transition-colors cursor-pointer
                 ${running ? 'bg-rose-500 hover:bg-rose-600' : 'bg-emerald-500 hover:bg-emerald-600'}`}
             >

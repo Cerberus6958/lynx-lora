@@ -1,6 +1,7 @@
+import { loadPages } from "../customStore/dataStore";
 import type { Page } from "../types/PageTypes";
 
-export const pages: Page[] = [
+export const pages: Page[] = loadPages().length > 0 ? loadPages() : [
   {
     graphs: [
       {

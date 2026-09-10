@@ -11,7 +11,7 @@ function NewGraphForm() {
   const [file, setFile] = useState<FileList | null>(null);
   const [name, setName] = useState<string>("");
   const navigate = useNavigate();
-  const [data, setData] = useState<DataPoint[]>([]);
+  const [_, setData] = useState<DataPoint[]>([]);
 
   function submitGraph() {
     

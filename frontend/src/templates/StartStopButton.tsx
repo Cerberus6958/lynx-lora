@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, type SetStateAction, type Dispatch, use } from 'react';
+import { useState, useEffect, useRef, type SetStateAction, type Dispatch } from 'react';
 import type { DataPoint } from '../types/SampleData';
 
 // import { appendFile } from 'node:fs/promises';
@@ -15,7 +15,7 @@ interface StartStopButtonProps {
   type: string
 }
 
-export function StartStopButton({ data, setData, name, port, type }: StartStopButtonProps) {
+export function StartStopButton({ setData, port, type }: StartStopButtonProps) {
   const [running, setRunning] = useState(true);
   const valueRef = useRef(50);
   let num = useRef<DataPoint | undefined>(null);

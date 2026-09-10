@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import ChartTemplate from '../templates/ChartTemplate';
 import LeftArrowButton from '../templates/LeftArrowButton';
 import RightArrowButton from '../templates/RightArrowButton';
@@ -6,12 +6,12 @@ import { pages } from '../templates/CurrentPages';
 import NewGraphButton from '../templates/NewGraphButton';
 import { useNavigate } from 'react-router';
 
-const WEBSOCKETPORT = 3002;
+// const WEBSOCKETPORT = 3002;
 
 function MasterPage() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(0);
-  const [newGraphForm, setNewGraphForm] = useState<boolean>(false);
+  // const [newGraphForm, setNewGraphForm] = useState<boolean>(false);
   let currentPage = pages[pageNumber].graphs;
   const navigate = useNavigate();
 

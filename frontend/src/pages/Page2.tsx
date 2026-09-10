@@ -1,28 +1,32 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import ChartTemplate from '../templates/ChartTemplate';
 
 function Page2() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const graphs = [
     {
-      key: 'Coolant Temperature Motor Inlet',
+      name: 'Coolant Temperature Motor Inlet',
       colour: '#06f36f',
-      style: 'p-2 rounded-lg bg-[#280c47] text-[#06f36f]'
+      style: 'p-2 rounded-lg bg-[#280c47] text-[#06f36f]',
+      type: 'running'
     },
     {
-      key: 'Coolant Temperature Motor Outlet',
+      name: 'Coolant Temperature Motor Outlet',
       colour: '#06f36f',
-      style: 'p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#280c47] to-[#06f36f] text-[#06f36f]'
+      style: 'p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#280c47] to-[#06f36f] text-[#06f36f]',
+      type: 'running'
     },
     {
-      key: 'Battery Temperature',
+      name: 'Battery Temperature',
       colour: '#06f36f',
-      style: 'p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#280c47] to-[#06f36f] text-[#06f36f]'
+      style: 'p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#280c47] to-[#06f36f] text-[#06f36f]',
+      type: 'running'
     },  
     {
-      key: 'Battery Voltage',
+      name: 'Battery Voltage',
       colour: '#280c47',
-      style: 'p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#280c47] to-[#06f36f] text-[#06f36f]'
+      style: 'p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#280c47] to-[#06f36f] text-[#06f36f]',
+      type: 'running'
     },  
   ];
 
@@ -32,16 +36,16 @@ function Page2() {
         <div className='min-h-screen flex justify-center items-center'>
           { expanded ? ( 
             <>
-              <div className={`w-[87vw] h-[95vh] ${graphs.find((chart) => chart.key === expanded)!.style}`} onClick={() => setExpanded(null)}>
-                <ChartTemplate optionalData={{}} name={graphs.find((chart) => chart.key === expanded)!.key} port={0} colour={graphs.find((chart) => chart.key === expanded)!.colour}></ChartTemplate>
+              <div className={`w-[87vw] h-[95vh] ${graphs.find((chart) => chart.name === expanded)!.style}`} onClick={() => setExpanded(null)}>
+                <ChartTemplate graph={graphs.find((chart) => chart.name === expanded)!} port={0}></ChartTemplate>
               </div>
             </>
             ) : (
             <>
               <div className='grid grid-cols-2 gap-8'>
-                {graphs.map(({key, colour, style}) => (
-                  <div key={key} className={`w-140 h-85 ${style}`} onClick={() => setExpanded(key)}>
-                    <ChartTemplate optionalData={{}}name={key} port={0} colour={colour}></ChartTemplate>
+                {graphs.map((graph) => (
+                  <div key={graph.name} className={`w-140 h-85 ${graph.style}`} onClick={() => setExpanded(graph.name)}>
+                    <ChartTemplate graph={graph} port={0}></ChartTemplate>
                   </div>
                 ))}
               </div>

@@ -56,6 +56,8 @@ void loop() {
   size_t len = serializeJson(doc, packet, sizeof(packet));
 
   rf95.send((uint8_t*)packet, len);
+  uint8_t newline = '\n'; 
+  rf95.send(&newline, 1);
   rf95.waitPacketSent(2000);
 
   Serial.print(packet);

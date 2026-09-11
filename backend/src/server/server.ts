@@ -10,6 +10,7 @@ import { ReadlineParser } from '@serialport/parser-readline';
 
 const BAUDRATE = 9600;
 const SERIALPATH = '/dev/cu.usbmodem101';
+const NUM_VALUES_PER_PACKET = 5;
 
 const app = express();
 app.use(json());
@@ -20,10 +21,10 @@ const dataFilePath = path.join(__dirname, '..', '..', 'dataStore');
 if (!fs.existsSync(dataFilePath)) {
   fs.mkdirSync(dataFilePath, { recursive: true });
 }
-const wss = new WebSocketServer({ port: 3002});
 
 const PORT: number = parseInt(process.env.PORT ?? '3001');
 const HOST: string = process.env.IP || '127.0.0.1';
+const wssMap = new Map<number, WebSocketServer>();
 
 const arduino = new SerialPort({path: SERIALPATH, baudRate: BAUDRATE});
 const parser = arduino.pipe(new ReadlineParser({ delimiter: '\n' }));
@@ -32,26 +33,29 @@ arduino.on('open', () => console.log(`Arduino on to port ${SERIALPATH}`));
 arduino.on('error', (err) => console.log(`Arduino error: ${err.message}`));
 
 parser.on('data', (data) => {
-  console.log(data)
+  console.log(data + "a")
 
   // Filtering logic for each packet should come here, one value for each sensor in the packet sent over
+  // Currently there are 5 values per packet within the JSON.
+  const a = JSON.parse(data);
 
-
-  // for (let i = 3000; i < 3015; i++) {
-    // const wss = new WebSocketServer({ port: i});    
-    data = data.trim();
-    data = data.match(/([0-9]+)cm/);
-    const value = data[1];
-    if (!isNaN(value)) {
-      console.log(`${value}`);
-      sendOver(value);
+  for (let i = 0; i < NUM_VALUES_PER_PACKET; i++) {
+    const port = i + 3000;
+    let wss = wssMap.get(port);
+    if (!wss) {
+      wss = new WebSocketServer({ port });
+      wssMap.set(port, wss);
     }
-  // }
+
+    const value = a.values[i];
+    if (!isNaN(value)) {
+      console.log(`${value} b`);
+      sendOver(value, wss);
+    }
+  }
 })
 
-// function sendOver(data: number, wss: WebSocketServer) {
-function sendOver(data: number) {
-  // const msg = JSON.stringify(data);
+function sendOver(data: number, wss: WebSocketServer) {
   wss.clients.forEach((client) => {
     if (client.readyState == client.OPEN) {
       client.send(data);

@@ -3,7 +3,7 @@ import ChartTemplate from '../templates/ChartTemplate';
 import LeftArrowButton from '../templates/LeftArrowButton';
 import RightArrowButton from '../templates/RightArrowButton';
 import { pages } from '../templates/CurrentPages';
-import NewGraphButton from '../templates/NewGraphButton';
+import NewTextButton from '../templates/TextButton';
 import { useNavigate } from 'react-router';
 
 // const WEBSOCKETPORT = 3002;
@@ -30,15 +30,16 @@ function MasterPage() {
                 }
                 onClick={() => setExpanded(expanded ? null : graph.name)}
               >
-                <ChartTemplate graph={graph} port={0} />
+                <ChartTemplate graph={graph} port={0}></ChartTemplate>
+                { expanded && <NewTextButton onClick={() => navigate('/edit', {state: {graph: graph, name: 'Edit Graph'}})} name='Edit Graph'/>}
               </div>
             ))}
           </div>
         </div>
         { !expanded &&
           <div className='flex justify-center gap-2'>
-            <NewGraphButton onClick={() => navigate('/new')}>
-            </NewGraphButton>
+            <NewTextButton onClick={() => navigate('/new', {state: {graph: null, name: 'New Graph'}})} name='New Graph'>
+            </NewTextButton>
             <LeftArrowButton onClick={() => {
               if (pageNumber > 0) {
                 setPageNumber(pageNumber - 1);

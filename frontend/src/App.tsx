@@ -7,7 +7,8 @@ import Page3 from './pages/Page3.tsx';
 import Imu from './pages/Imu.tsx';
 import UltrasonicDemo from './pages/UltrasonicDemo.tsx';
 import MasterPage from './pages/MasterPage.tsx';
-import NewGraphForm from './templates/NewGraphForm.tsx';
+import NewGraphForm from './templates/GraphForm.tsx';
+import EditGraphForm from './templates/GraphForm.tsx';
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -89,6 +90,7 @@ function App() {
               <Route path='/imu' element={<Imu />}></Route>
               <Route path='/demo' element={<UltrasonicDemo />}></Route>
               <Route path='/new' element={<NewGraphForm />}></Route>
+              <Route path='/edit' element={<EditGraphForm />}></Route>
             </Routes>
           </main>
         </BrowserRouter>

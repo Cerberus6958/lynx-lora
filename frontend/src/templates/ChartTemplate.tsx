@@ -56,7 +56,7 @@ export default function LiveChart({graph, port }: { graph: Graph, port: number }
             >
               {running ? 'Pause' : 'Resume'}
             </button> */}
-            <StartStopButton data={data} setData={setData} graph={graph} port={port}></StartStopButton>
+           { graph.type === "Running" && <StartStopButton data={data} setData={setData} graph={graph} port={port}></StartStopButton>}
           </div>
       {/* <StartStopButton data={data} setData={setData}></StartStopButton> */}
       <ResponsiveContainer width="100%" height="85%">

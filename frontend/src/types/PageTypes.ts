@@ -9,5 +9,6 @@ export type Graph = {
     colour: string,
     style: string,
     data?: DataPoint[],
-    type: string
+    type: string,
+    maxNum?: number
 }

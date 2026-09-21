@@ -4,11 +4,15 @@ import type { DataPoint } from '../types/SampleData';
 import { StartStopButton } from './StartStopButton';
 import { API_BASE_URL } from '../api';
 import type { Graph } from '../types/PageTypes';
+import { MAX_POINTS } from '../types/constants';
 
 // const WEBSOCKETPORT = 3002;
+// const MAX_POINTS = 40;
 
 export default function LiveChart({graph, port }: { graph: Graph, port: number }) {
-  const [data, setData] = useState<DataPoint[]>(graph.data ?? []);
+  const limit = graph.maxNum ?? MAX_POINTS;
+  const init = graph.data ?? [];
+  const [data, setData] = useState<DataPoint[]>(init.length > limit ? init.slice(-limit) : init);
 
   useEffect(() => {
     console.log('EFFECT RAN');
@@ -52,7 +56,7 @@ export default function LiveChart({graph, port }: { graph: Graph, port: number }
             >
               {running ? 'Pause' : 'Resume'}
             </button> */}
-            <StartStopButton data={data} setData={setData} name={graph.name} type={graph.type} port={port}></StartStopButton>
+            <StartStopButton data={data} setData={setData} graph={graph} port={port}></StartStopButton>
           </div>
       {/* <StartStopButton data={data} setData={setData}></StartStopButton> */}
       <ResponsiveContainer width="100%" height="85%">

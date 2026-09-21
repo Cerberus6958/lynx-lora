@@ -1,21 +1,22 @@
 import { useState, useEffect, useRef, type SetStateAction, type Dispatch } from 'react';
 import type { DataPoint } from '../types/SampleData';
+import type { Graph } from '../types/PageTypes';
+import { MAX_POINTS, INTERVAL_MS } from '../types/constants';
 
 // import { appendFile } from 'node:fs/promises';
 
-const MAX_POINTS = 40;
-const INTERVAL_MS = 500;
+// const MAX_POINTS = 40;
+// const INTERVAL_MS = 500;
 // const WEBSOCKETPORT = 3002;
 
 interface StartStopButtonProps {
   data: DataPoint[];
   setData: Dispatch<SetStateAction<DataPoint[]>>;
-  name: string;
+  graph: Graph
   port: number;
-  type: string
 }
 
-export function StartStopButton({ setData, port, type }: StartStopButtonProps) {
+export function StartStopButton({ setData, port, graph }: StartStopButtonProps) {
   const [running, setRunning] = useState(true);
   const valueRef = useRef(50);
   let num = useRef<DataPoint | undefined>(null);
@@ -37,7 +38,7 @@ export function StartStopButton({ setData, port, type }: StartStopButtonProps) {
 
   useEffect(() => {
     if (!running) return;
-    if (type === 'Still') return;
+    if (graph.type === 'Still') return;
     const id = setInterval(async () => {
       valueRef.current += (Math.random() - 0.5) * 10;
       valueRef.current = Math.max(0, Math.min(100, valueRef.current));
@@ -62,7 +63,8 @@ export function StartStopButton({ setData, port, type }: StartStopButtonProps) {
         } else {
           next = [...prev, point];
         }
-        return next.length > MAX_POINTS ? next.slice(next.length - MAX_POINTS) : next;
+        const limit = graph.maxNum ?? MAX_POINTS;
+        return next.length > limit ? next.slice(next.length - limit) : next;
       });
     }, INTERVAL_MS);
 

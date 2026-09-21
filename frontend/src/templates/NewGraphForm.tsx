@@ -10,6 +10,7 @@ function NewGraphForm() {
   const [chosen, setChosen] = useState<string>("Running");
   const [file, setFile] = useState<FileList | null>(null);
   const [name, setName] = useState<string>("");
+  const [number, setNumber] = useState(0);
   const navigate = useNavigate();
   const [_, setData] = useState<DataPoint[]>([]);
 
@@ -28,7 +29,8 @@ function NewGraphForm() {
           colour: "#06f36f",
           style: "p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#280c47] to-[#06f36f] text-[#06f36f]",
           type: chosen,
-          data: newData
+          data: newData,
+          maxNum: number
         }
 
         if (latestPage!.graphs.length >= 4) {
@@ -73,6 +75,8 @@ function NewGraphForm() {
         </div>
         <div>JSON File</div>
         <input type="file" className="self-center bg-[#280c47] w-[14vw] file:bg-purple-900" onChange={(e) => setFile(e.target.files)}></input>
+        <div>Desired number of points displayed</div>
+        <input onChange={(e) => {setNumber(Number(e.target.value))}} type="text" className="w-auto self-center bg-[#06f36f] text-red-500"></input>
         <button className="bg-[#06f36f] self-center rounded-md w-20 h-10" onClick={(e) => {submitGraph(); e.preventDefault()}}>Submit</button>
       </form>
     </>

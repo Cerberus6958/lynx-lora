@@ -87,7 +87,8 @@ function sendOver(data: number, wss: WebSocketServer) {
   })
 }
 
-
+// Right now this only writes to files from the frontend-eventually we should save it straight from the backend,
+// since not all values will be displayed at once on the frontend, which means missing values
 app.post('/datastore', (req: Request, res: Response) => {
   try {
     console.log(req.body);

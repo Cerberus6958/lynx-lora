@@ -8,25 +8,25 @@ function Page2() {
       name: 'Coolant Temperature Motor Inlet',
       colour: '#06f36f',
       style: 'p-2 rounded-lg bg-[#280c47] text-[#06f36f]',
-      type: 'running'
+      type: 'Running'
     },
     {
       name: 'Coolant Temperature Motor Outlet',
       colour: '#06f36f',
       style: 'p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#280c47] to-[#06f36f] text-[#06f36f]',
-      type: 'running'
+      type: 'Running'
     },
     {
       name: 'Battery Temperature',
       colour: '#06f36f',
       style: 'p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#280c47] to-[#06f36f] text-[#06f36f]',
-      type: 'running'
+      type: 'Running'
     },  
     {
       name: 'Battery Voltage',
       colour: '#280c47',
       style: 'p-2 rounded-lg bg-gradient-to-br from-[#280c47] via-[#280c47] to-[#06f36f] text-[#06f36f]',
-      type: 'running'
+      type: 'Running'
     },  
   ];
 

@@ -25,6 +25,7 @@ function GraphForm() {
       page!.name = name;
       page!.maxNum = number;
       page!.type = chosen;
+      savePages(pages);
       navigate('/master');
       return;
     }

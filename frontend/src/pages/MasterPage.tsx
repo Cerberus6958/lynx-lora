@@ -30,7 +30,7 @@ function MasterPage() {
                 }
                 onClick={() => setExpanded(expanded ? null : graph.name)}
               >
-                <ChartTemplate graph={graph} port={0}></ChartTemplate>
+                <ChartTemplate graph={graph} port={Math.floor(Math.random() * 5) + 1000}></ChartTemplate>
                 { expanded && <NewTextButton onClick={() => navigate('/edit', {state: {graph: graph, name: 'Edit Graph'}})} name='Edit Graph'/>}
               </div>
             ))}

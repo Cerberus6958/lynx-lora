@@ -19,15 +19,19 @@ interface StartStopButtonProps {
 export function StartStopButton({ setData, port, graph }: StartStopButtonProps) {
   const [running, setRunning] = useState(true);
   const valueRef = useRef(50);
-  let num = useRef<DataPoint | undefined>(null);
+  // let num = useRef<DataPoint | undefined>(null);
+  let num = useRef<number | undefined>(null);
   useEffect(() => {
     if (port === 0) return;
     const wss = new WebSocket(`ws://localhost:${port}`);
+    wss.onopen = () => console.log(`Connected on port ${port}`);
+    wss.onerror = (e) => console.log(`Error on port ${port}`, e);
+    wss.onclose = (e) => console.log(`Closed on port ${port}`, e.code, e.reason);
 
     wss.onmessage = (event) => {
       const data = JSON.parse(event.data);
       // const data = event.data;
-      console.log(data);
+      console.log(data + "AJAJAJAJAJAJ");
       num.current = data;
     };
 
@@ -45,8 +49,9 @@ export function StartStopButton({ setData, port, graph }: StartStopButtonProps) 
 
       // So each sensor will have one point for each time (packet of data sent)
       const point = {
-        time: port !== 0 ? num.current!.time : new Date().toLocaleTimeString(),
-        value: port !== 0 ? num.current!.value : Math.round(valueRef.current * 100) / 100,
+        // time: port !== 0 ? num.current!.time : new Date().toLocaleTimeString(),
+        time: new Date().toLocaleTimeString(),
+        value: port !== 0 ? num.current! : Math.round(valueRef.current * 100) / 100,
       };
 
       // Below is the logic for values that may have been originally missed, that should be reinserted

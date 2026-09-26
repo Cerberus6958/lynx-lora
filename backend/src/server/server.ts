@@ -32,33 +32,57 @@ const parser = arduino.pipe(new ReadlineParser({ delimiter: '\n' }));
 arduino.on('open', () => console.log(`Arduino on to port ${SERIALPATH}`));
 arduino.on('error', (err) => console.log(`Arduino error: ${err.message}`));
 
-parser.on('data', (data) => {
-  console.log(data + "a")
+// Below code is for when we have our LoRa modules on
+// parser.on('data', (data) => {
+//   console.log(data + "a")
 
-  // Filtering logic for each packet should come here, one value for each sensor in the packet sent over
-  // Currently there are 5 values per packet within the JSON.
-  const a = JSON.parse(data);
+//   // Filtering logic for each packet should come here, one value for each sensor in the packet sent over
+//   // Currently there are 5 values per packet within the JSON.
+//   const a = JSON.parse(data);
 
+  // for (let i = 0; i < NUM_VALUES_PER_PACKET; i++) {
+  //   const port = i + 1000;
+  //   let wss = wssMap.get(port);
+  //   if (!wss) {
+  //     wss = new WebSocketServer({ port });
+  //     wssMap.set(port, wss);
+  //   }
+
+  //   const value = a.values[i];
+  //   if (!isNaN(value)) {
+  //     console.log(`${value} b`);
+  //     sendOver(value, wss);
+  //   }
+  // }
+// })
+
+// Below code is for current iterations sending values from backend
+for (let i = 0; i < NUM_VALUES_PER_PACKET; i++) {
+  const port = i + 1000;
+  let wss = wssMap.get(port);
+  if (!wss) {
+    wss = new WebSocketServer({ port });
+    wssMap.set(port, wss);
+  };
+  console.log(port);
+}
+
+setInterval(() => {
   for (let i = 0; i < NUM_VALUES_PER_PACKET; i++) {
-    const port = i + 3000;
-    let wss = wssMap.get(port);
-    if (!wss) {
-      wss = new WebSocketServer({ port });
-      wssMap.set(port, wss);
-    }
-
-    const value = a.values[i];
-    if (!isNaN(value)) {
-      console.log(`${value} b`);
-      sendOver(value, wss);
+    const port = i + 1000;
+    const wss = wssMap.get(port);
+    if (wss) {
+      sendOver(1, wss);
     }
   }
-})
+}, 100);
 
 function sendOver(data: number, wss: WebSocketServer) {
   wss.clients.forEach((client) => {
     if (client.readyState == client.OPEN) {
-      client.send(data);
+      // client.send(data);
+      client.send(Math.floor(Math.random() * 100) + 100);
+      // client.send(1);
     }
   })
 }

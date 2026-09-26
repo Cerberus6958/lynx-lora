@@ -15,8 +15,8 @@ export default function LiveChart({graph, port }: { graph: Graph, port: number }
   const [data, setData] = useState<DataPoint[]>(init.length > limit ? init.slice(-limit) : init);
 
   useEffect(() => {
-    console.log('EFFECT RAN');
-    console.log('data:', data);
+    // console.log('EFFECT RAN');
+    // console.log('data:', data);
     if (data.length === 0) {
       return;
     }
